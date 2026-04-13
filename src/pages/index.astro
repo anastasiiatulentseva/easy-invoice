@@ -631,22 +631,41 @@
         day: "numeric"
       }).format(new Date());
 
-      const getNextInvoiceCode = () => {
+      const formatInvoiceCode = (year, sequence) => `INV-${year}-${String(sequence).padStart(3, "0")}`;
+
+      const getStoredSequence = (key) => {
+        const value = Number.parseInt(localStorage.getItem(key) || "", 10);
+        return Number.isFinite(value) && value > 0 ? value : null;
+      };
+
+      const getCurrentInvoiceCode = () => {
         const year = new Date().getFullYear();
         const key = `invoice-sequence-${year}`;
 
         try {
-          const last = Number.parseInt(localStorage.getItem(key) || "0", 10);
-          const next = Number.isFinite(last) && last > 0 ? last + 1 : 1;
+          const current = getStoredSequence(key) ?? 1;
+          return formatInvoiceCode(year, current);
+        } catch {
+          return `INV-${year}-001`;
+        }
+      };
+
+      const advanceInvoiceCode = () => {
+        const year = new Date().getFullYear();
+        const key = `invoice-sequence-${year}`;
+
+        try {
+          const current = getStoredSequence(key) ?? 1;
+          const next = current + 1;
           localStorage.setItem(key, String(next));
-          return `INV-${year}-${String(next).padStart(3, "0")}`;
+          return formatInvoiceCode(year, next);
         } catch {
           return `INV-${year}-001`;
         }
       };
 
       const initialData = {
-        invoiceNumber: getNextInvoiceCode(),
+        invoiceNumber: getCurrentInvoiceCode(),
         issuedDate: todayIssuedDate,
         currency: "USD",
         fromName: "",
@@ -770,6 +789,7 @@
 
       document.getElementById("resetDemo").addEventListener("click", () => {
         applyInitialData();
+        inputs.invoiceNumber.value = advanceInvoiceCode();
         render();
       });
 
