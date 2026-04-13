@@ -760,14 +760,25 @@
     </main>
 
     <script>
+      /**
+       * @typedef {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} FormField
+       */
+
       const todayIssuedDate = new Intl.DateTimeFormat("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric"
       }).format(new Date());
 
+      /**
+       * @param {number} year
+       * @param {number} sequence
+       */
       const formatInvoiceCode = (year, sequence) => `INV-${year}-${String(sequence).padStart(3, "0")}`;
 
+      /**
+       * @param {string} key
+       */
       const getStoredSequence = (key) => {
         const value = Number.parseInt(localStorage.getItem(key) || "", 10);
         return Number.isFinite(value) && value > 0 ? value : null;
@@ -828,16 +839,97 @@
         notes: defaultNotesTemplate
       };
 
-      const ids = Object.keys(initialData);
-      const inputs = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
+      /** @typedef {typeof initialData} InvoiceData */
+
+      /**
+       * @param {string} id
+       * @returns {HTMLElement}
+       */
+      const getRequiredElement = (id) => {
+        const element = document.getElementById(id);
+
+        if (!element) {
+          throw new Error(`Missing element: ${id}`);
+        }
+
+        return element;
+      };
+
+      /**
+       * @param {string} id
+       * @returns {FormField}
+       */
+      const getFormField = (id) => {
+        const element = getRequiredElement(id);
+
+        if (
+          element instanceof HTMLInputElement ||
+          element instanceof HTMLTextAreaElement ||
+          element instanceof HTMLSelectElement
+        ) {
+          return element;
+        }
+
+        throw new Error(`Expected form field: ${id}`);
+      };
+
+      /**
+       * @param {string} id
+       * @returns {HTMLLabelElement}
+       */
+      const getLabelElement = (id) => {
+        const element = getRequiredElement(id);
+
+        if (element instanceof HTMLLabelElement) {
+          return element;
+        }
+
+        throw new Error(`Expected label element: ${id}`);
+      };
+
+      /**
+       * @param {string} id
+       * @returns {HTMLTableRowElement}
+       */
+      const getTableRow = (id) => {
+        const element = getRequiredElement(id);
+
+        if (element instanceof HTMLTableRowElement) {
+          return element;
+        }
+
+        throw new Error(`Expected table row: ${id}`);
+      };
+
+      /**
+       * @param {string} id
+       * @returns {HTMLButtonElement}
+       */
+      const getButtonElement = (id) => {
+        const element = getRequiredElement(id);
+
+        if (element instanceof HTMLButtonElement) {
+          return element;
+        }
+
+        throw new Error(`Expected button element: ${id}`);
+      };
+
+      /** @type {(keyof InvoiceData)[]} */
+      const ids = /** @type {(keyof InvoiceData)[]} */ (Object.keys(initialData));
+      /** @type {Record<keyof InvoiceData, FormField>} */
+      const inputs = /** @type {Record<keyof InvoiceData, FormField>} */ (
+        Object.fromEntries(ids.map((id) => [id, getFormField(id)]))
+      );
       const rateLabels = [
-        document.getElementById("rateLabel1"),
-        document.getElementById("rateLabel2"),
-        document.getElementById("rateLabel3")
+        getLabelElement("rateLabel1"),
+        getLabelElement("rateLabel2"),
+        getLabelElement("rateLabel3")
       ];
-      const lineItemRow2 = document.getElementById("lineItemRow2");
-      const lineItemRow3 = document.getElementById("lineItemRow3");
+      const lineItemRow2 = getTableRow("lineItemRow2");
+      const lineItemRow3 = getTableRow("lineItemRow3");
       const PROFILE_STORAGE_KEY = "invoice-profile-v1";
+      /** @type {(keyof InvoiceData)[]} */
       const PROFILE_FIELDS = [
         "currency",
         "fromName",
@@ -850,12 +942,19 @@
         "correspondentBic"
       ];
 
+      /**
+       * @param {number} amount
+       * @param {string} currencyCode
+       */
       const formatCurrency = (amount, currencyCode) =>
         new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: currencyCode || "USD"
         }).format(amount);
 
+      /**
+       * @param {string} value
+       */
       const sanitizeFilenamePart = (value) =>
         (value || "")
           .toString()
@@ -863,42 +962,62 @@
           .replace(/[^a-z0-9]+/gi, "-")
           .replace(/^-+|-+$/g, "");
 
+      /**
+       * @param {InvoiceData} data
+       */
       const buildPrintTitle = (data) => {
         const invoicePart = sanitizeFilenamePart(data.invoiceNumber) || "invoice";
         const clientPart = sanitizeFilenamePart(data.toName);
         return ["invoice", invoicePart, clientPart].filter(Boolean).join("_");
       };
 
+      /**
+       * @param {keyof InvoiceData} key
+       * @param {string} value
+       */
       const assignIfPresent = (key, value) => {
         if (inputs[key] && typeof value === "string") {
           inputs[key].value = value;
         }
       };
 
+      /**
+       * @param {Partial<InvoiceData>} profileData
+       */
       const applyProfileValues = (profileData) => {
         for (const key of PROFILE_FIELDS) {
           assignIfPresent(key, profileData?.[key] ?? "");
         }
       };
 
+      /**
+       * @returns {InvoiceData}
+       */
       const getData = () => {
-        const values = {};
+        const values = { ...initialData };
         for (const id of ids) values[id] = inputs[id].value.trim();
         return values;
       };
 
       const applyInitialData = () => {
-        for (const [key, value] of Object.entries(initialData)) {
-          if (inputs[key]) inputs[key].value = value;
+        for (const id of ids) {
+          inputs[id].value = initialData[id];
         }
       };
 
+      /**
+       * @param {string} key
+       * @param {string} value
+       */
       const setText = (key, value) => {
         document.querySelectorAll(`[data-bind="${key}"]`).forEach((node) => {
           node.textContent = value;
         });
       };
 
+      /**
+       * @param {string} value
+       */
       const toNonNegativeNumber = (value) => Math.max(0, Number.parseFloat(value) || 0);
 
       const render = () => {
@@ -994,7 +1113,7 @@
 
       ids.forEach((id) => inputs[id].addEventListener("input", render));
 
-      document.getElementById("downloadPdf").addEventListener("click", () => {
+      getButtonElement("downloadPdf").addEventListener("click", () => {
         const previousTitle = document.title;
         document.title = buildPrintTitle(getData());
 
@@ -1007,14 +1126,14 @@
         setTimeout(restoreTitle, 0);
       });
 
-      document.getElementById("resetDemo").addEventListener("click", () => {
+      getButtonElement("resetDemo").addEventListener("click", () => {
         applyInitialData();
         inputs.invoiceNumber.value = advanceInvoiceCode();
         render();
       });
 
-      document.getElementById("saveLocalProfile").addEventListener("click", () => {
-        const profileStatus = document.getElementById("profileStatus");
+      getButtonElement("saveLocalProfile").addEventListener("click", () => {
+        const profileStatus = getRequiredElement("profileStatus");
         profileStatus.textContent = "Saving to browser...";
 
         const data = getData();
@@ -1038,8 +1157,8 @@
         }
       });
 
-      document.getElementById("loadLocalProfile").addEventListener("click", () => {
-        const profileStatus = document.getElementById("profileStatus");
+      getButtonElement("loadLocalProfile").addEventListener("click", () => {
+        const profileStatus = getRequiredElement("profileStatus");
         profileStatus.textContent = "Loading saved values from browser...";
 
         try {
@@ -1049,7 +1168,7 @@
             return;
           }
 
-          const data = JSON.parse(raw);
+          const data = /** @type {Partial<InvoiceData>} */ (JSON.parse(raw));
           applyProfileValues(data);
           render();
 

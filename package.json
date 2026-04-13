@@ -1,14 +1,21 @@
 {
   "name": "invoices",
   "version": "0.1.0",
+  "description": "A browser-based Astro invoice builder with live preview and print-to-PDF export.",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "astro check"
   },
   "dependencies": {
     "astro": "^5.7.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "typescript": "^5.9.3"
   }
 }

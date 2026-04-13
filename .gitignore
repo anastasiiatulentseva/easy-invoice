@@ -1,5 +1,21 @@
-.DS_Store
-.astro/
-dist/
+# Dependencies and build output
 node_modules/
+dist/
+.astro/
+
+# Optional local private files
 profiles/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor and OS files
+.DS_Store
+.idea/
+.vscode/
