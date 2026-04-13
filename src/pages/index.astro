@@ -120,6 +120,30 @@
         white-space: nowrap;
       }
 
+      .line-item-collapsible {
+        margin-top: 0.75rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 0.45rem 0.6rem;
+        background: #f8fafc;
+      }
+
+      .line-item-collapsible[open] {
+        padding-bottom: 0.7rem;
+      }
+
+      .line-item-collapsible summary {
+        cursor: pointer;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #334155;
+        user-select: none;
+      }
+
+      .line-item-collapsible label:first-of-type {
+        margin-top: 0.55rem;
+      }
+
       .btn {
         flex: 1;
         border: 0;
@@ -148,15 +172,20 @@
 
       .paper-wrap {
         width: min(100%, 900px);
+        padding: 0;
+        background: transparent;
+        border: 0;
       }
 
       .paper {
         width: 100%;
         aspect-ratio: 210 / 297;
         background: #fff;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+        border: 0;
+        border-radius: 0;
+        box-shadow:
+          0 1px 0 rgba(15, 23, 42, 0.08),
+          0 14px 24px rgba(15, 23, 42, 0.14);
         padding: 11.5mm 11mm 10mm;
         display: grid;
         grid-template-rows: auto auto 1fr auto;
@@ -170,7 +199,7 @@
         gap: 7mm;
         align-items: start;
         padding-bottom: 4mm;
-        border-bottom: 1px solid var(--line);
+        border-bottom: 1px solid #b9c8d8;
       }
 
       .invoice-kicker {
@@ -179,27 +208,28 @@
         letter-spacing: 0.14em;
         text-transform: uppercase;
         font-weight: 600;
-        color: #5c728a;
+        color: #0a355f;
       }
 
       .title {
         margin: 0;
         font-size: 1.85rem;
         letter-spacing: 0.08em;
+        color: #0a355f;
       }
 
       .subtitle {
         margin: 1.6mm 0 0;
-        color: var(--muted);
+        color: #4a6683;
         font-size: 0.78rem;
       }
 
       .meta-card {
         min-width: 60mm;
-        border: 1px solid var(--line);
-        border-radius: 10px;
+        border: 1px solid #b9c8d8;
+        border-radius: 8px;
         padding: 3.2mm;
-        background: linear-gradient(180deg, #f7fbff 0%, #f8fafc 100%);
+        background: #f7fbff;
       }
 
       .meta-row {
@@ -220,7 +250,7 @@
       .amount-due {
         margin-top: 3mm;
         padding-top: 2.3mm;
-        border-top: 1px solid var(--line-strong);
+        border-top: 1px solid #aabdd1;
       }
 
       .amount-due span {
@@ -228,14 +258,14 @@
         font-size: 0.69rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #5c728a;
+        color: #4a6683;
       }
 
       .amount-due strong {
         display: block;
         margin-top: 1mm;
         font-size: 1.05rem;
-        color: #0c2745;
+        color: #0a355f;
       }
 
       .party-grid {
@@ -245,10 +275,10 @@
       }
 
       .card {
-        border: 1px solid var(--line);
-        border-radius: 10px;
+        border: 1px solid #c5d4e4;
+        border-radius: 8px;
         padding: 4mm;
-        background: #f8fbff;
+        background: #fff;
       }
 
       .card h3 {
@@ -256,7 +286,7 @@
         font-size: 0.72rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #4f6479;
+        color: #365271;
       }
 
       .card pre {
@@ -268,8 +298,8 @@
       }
 
       .items-card {
-        border: 1px solid var(--line);
-        border-radius: 10px;
+        border: 1px solid #c5d4e4;
+        border-radius: 8px;
         overflow: hidden;
       }
 
@@ -279,9 +309,9 @@
         font-size: 0.72rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #4f6479;
-        background: #f8fbff;
-        border-bottom: 1px solid var(--line);
+        color: #365271;
+        background: #f7fbff;
+        border-bottom: 1px solid #c5d4e4;
       }
 
       table {
@@ -319,9 +349,10 @@
       thead th {
         font-size: 0.71rem;
         text-transform: uppercase;
-        color: #334a60;
+        color: #365271;
+        background: #f8fbff;
         padding: 2.4mm 2.2mm;
-        border-bottom: 1px solid var(--line);
+        border-bottom: 1px solid #c5d4e4;
       }
 
       tbody td {
@@ -338,7 +369,7 @@
         padding: 3.1mm 2.2mm;
         font-size: 0.88rem;
         font-weight: 700;
-        border-top: 1.6px solid #7b8ea5;
+        border-top: 1.4px solid #7f97b1;
       }
 
       .footer {
@@ -349,8 +380,8 @@
 
       .notes,
       .payment {
-        border: 1px solid var(--line);
-        border-radius: 10px;
+        border: 1px solid #c5d4e4;
+        border-radius: 8px;
         padding: 3.3mm;
       }
 
@@ -360,7 +391,7 @@
         font-size: 0.72rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #4f6479;
+        color: #0a355f;
       }
 
       .notes p,
@@ -368,6 +399,10 @@
         margin: 1.2mm 0;
         font-size: 0.78rem;
         line-height: 1.4;
+      }
+
+      .notes [data-bind="notesBlock"] {
+        white-space: pre-line;
       }
 
       .payment [data-bind="bankAddress"] {
@@ -406,7 +441,7 @@
       @media print {
         @page {
           size: A4;
-          margin: 0;
+          margin: 8mm;
         }
 
         html,
@@ -430,39 +465,93 @@
         }
 
         .paper-wrap {
-          width: 210mm;
-          max-width: 210mm;
+          width: auto;
+          max-width: none;
           margin: 0;
+          padding: 0;
+          border: 0;
+          background: transparent;
         }
 
         .paper {
-          width: 210mm;
-          height: 297mm;
-          min-height: 297mm;
-          aspect-ratio: auto;
+          width: 100%;
+          height: auto;
+          min-height: calc(297mm - 16mm);
+          aspect-ratio: 210 / 297;
           border: 0;
           border-radius: 0;
           box-shadow: none;
           page-break-inside: avoid;
           break-inside: avoid;
-          padding: 11.5mm 11mm 10mm;
+          padding: 6mm 7mm 5mm;
+          gap: 5mm;
+          overflow: visible;
         }
 
         .inv-header {
           grid-template-columns: 1fr auto;
+          padding-bottom: 2mm;
+          border-bottom: 0;
         }
 
         .party-grid {
           grid-template-columns: 1fr 1fr;
+          gap: 4mm;
         }
 
         .footer {
           grid-template-columns: 1.15fr 1fr;
+          gap: 4mm;
         }
 
         .meta-card {
           min-width: 60mm;
           width: auto;
+          padding: 2.8mm;
+        }
+
+        .card,
+        .notes,
+        .payment {
+          padding: 2.6mm;
+        }
+
+        .items-card {
+          padding: 0;
+          background: #fff;
+        }
+
+        .section-label {
+          padding: 2mm 2.2mm;
+          background: #fff;
+          border-bottom: 1px solid #c5d4e4;
+        }
+
+        thead th,
+        tbody td,
+        tfoot td {
+          border: 0;
+        }
+
+        thead th {
+          padding: 2mm 1.8mm;
+          background: #fff;
+          border-bottom: 1px solid #c5d4e4;
+        }
+
+        tbody td {
+          padding: 2mm 1.8mm;
+          border-bottom: 1px solid #d9e3ee;
+        }
+
+        tfoot td {
+          padding: 2.2mm 1.8mm 0;
+          border-top: 1.2px solid #7f97b1;
+        }
+
+        .notes p,
+        .payment p {
+          margin: 1mm 0;
         }
       }
     </style>
@@ -471,9 +560,8 @@
     <main class="layout">
       <aside class="panel controls">
         <h1>Invoice Data</h1>
-        <p>Edit values on the left. The invoice preview updates live.</p>
-        <p style="margin:0 0 0.8rem;padding:0.55rem 0.7rem;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;font-size:0.82rem;color:#334155;">
-          Start here: fill in your details, use browser autofill, or load saved values from this browser.
+        <p style="margin:0.7rem 0 1rem;padding:0.8rem 0.95rem;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;font-size:0.84rem;line-height:1.45;color:#334155;">
+          Fill in the form below to build your invoice. The preview updates live, and you can use browser autofill or load your saved sender/payment profile before downloading your PDF.
         </p>
 
         <fieldset>
@@ -504,12 +592,45 @@
 
         <fieldset>
           <legend>Billing</legend>
+          <p style="margin:0 0 0.45rem;font-size:0.8rem;color:#475569;">Line item 1</p>
           <label for="workDescription">Description</label>
-          <input id="workDescription" value="Test assignment" />
+          <input id="workDescription" placeholder="Describe the work delivered" />
           <label for="hours">Hours</label>
-          <input id="hours" type="number" step="0.1" min="0" value="3.0" />
-          <label for="rate">Rate per hour</label>
+          <input id="hours" type="number" step="0.1" min="0" placeholder="0.0" />
+          <label id="rateLabel1" for="rate">Rate per hour (USD)</label>
           <input id="rate" type="number" step="0.01" min="0" value="0.00" />
+
+          <details class="line-item-collapsible">
+            <summary>Line item 2 (optional)</summary>
+            <label for="workDescription2">Description</label>
+            <input id="workDescription2" placeholder="Optional line item description" />
+            <label for="hours2">Hours</label>
+            <input id="hours2" type="number" step="0.1" min="0" placeholder="0.0" />
+            <label id="rateLabel2" for="rate2">Rate per hour (USD)</label>
+            <input id="rate2" type="number" step="0.01" min="0" placeholder="0.00" />
+          </details>
+
+          <details class="line-item-collapsible">
+            <summary>Line item 3 (optional)</summary>
+            <label for="workDescription3">Description</label>
+            <input id="workDescription3" placeholder="Optional line item description" />
+            <label for="hours3">Hours</label>
+            <input id="hours3" type="number" step="0.1" min="0" placeholder="0.0" />
+            <label id="rateLabel3" for="rate3">Rate per hour (USD)</label>
+            <input id="rate3" type="number" step="0.01" min="0" placeholder="0.00" />
+          </details>
+        </fieldset>
+
+        <fieldset>
+          <legend>Notes</legend>
+          <details class="line-item-collapsible">
+            <summary>Edit notes (optional)</summary>
+            <label for="notes">Notes text</label>
+            <textarea id="notes" rows="4" placeholder="Add invoice notes"></textarea>
+            <p style="margin:0.5rem 0 0;font-size:0.78rem;color:#64748b;">
+              Tip: Use <code>&#123;&#123;invoiceNumber&#125;&#125;</code> to insert the current invoice number.
+            </p>
+          </details>
         </fieldset>
 
         <fieldset>
@@ -530,17 +651,20 @@
 
         <fieldset>
           <legend>Browser profile</legend>
-          <p style="margin:0 0 0.55rem;font-size:0.8rem;color:#475569;">Saved values stay in this browser only.</p>
+          <p style="margin:0 0 0.55rem;font-size:0.8rem;line-height:1.45;color:#475569;">
+            Saves your sender and payment details (currency, from name/address, and bank fields) in this browser only.
+            It stays on this device and does not sync to other browsers or devices.
+          </p>
           <div class="inline-action">
-            <button id="loadLocalProfile" class="btn btn-secondary" type="button">Fill In</button>
-            <button id="saveLocalProfile" class="btn btn-primary" type="button">Save Here</button>
+            <button id="loadLocalProfile" class="btn btn-secondary" type="button">Load Saved</button>
+            <button id="saveLocalProfile" class="btn btn-primary" type="button">Save to Browser</button>
           </div>
           <p id="profileStatus" style="margin:0.6rem 0 0;font-size:0.8rem;color:#475569;"></p>
         </fieldset>
 
         <div class="toolbar">
           <button id="downloadPdf" class="btn btn-primary" type="button">Download PDF</button>
-          <button id="resetDemo" class="btn btn-secondary" type="button">Reset</button>
+          <button id="resetDemo" class="btn btn-secondary" type="button">Reset Form</button>
         </div>
       </aside>
 
@@ -559,7 +683,7 @@
                 <div class="meta-row"><span>Currency</span> <strong data-bind="currency"></strong></div>
                 <div class="amount-due">
                   <span>Total due</span>
-                  <strong data-bind="lineTotal"></strong>
+                  <strong data-bind="grandTotal"></strong>
                 </div>
               </div>
             </header>
@@ -588,16 +712,28 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="col-desc" data-bind="workDescription"></td>
-                    <td class="col-hours" data-bind="hours"></td>
-                    <td class="col-rate" data-bind="rateFormatted"></td>
-                    <td class="col-total" data-bind="lineTotal"></td>
+                    <td class="col-desc" data-bind="line1Description"></td>
+                    <td class="col-hours" data-bind="line1Hours"></td>
+                    <td class="col-rate" data-bind="line1RateFormatted"></td>
+                    <td class="col-total" data-bind="line1Total"></td>
+                  </tr>
+                  <tr id="lineItemRow2" style="display:none;">
+                    <td class="col-desc" data-bind="line2Description"></td>
+                    <td class="col-hours" data-bind="line2Hours"></td>
+                    <td class="col-rate" data-bind="line2RateFormatted"></td>
+                    <td class="col-total" data-bind="line2Total"></td>
+                  </tr>
+                  <tr id="lineItemRow3" style="display:none;">
+                    <td class="col-desc" data-bind="line3Description"></td>
+                    <td class="col-hours" data-bind="line3Hours"></td>
+                    <td class="col-rate" data-bind="line3RateFormatted"></td>
+                    <td class="col-total" data-bind="line3Total"></td>
                   </tr>
                 </tbody>
                 <tfoot>
                   <tr>
                     <td colspan="3" class="total-label">Total amount due</td>
-                    <td class="col-total" data-bind="lineTotal"></td>
+                    <td class="col-total" data-bind="grandTotal"></td>
                   </tr>
                 </tfoot>
               </table>
@@ -606,8 +742,7 @@
             <footer class="footer">
               <div class="notes">
                 <h4>Notes</h4>
-                <p>Please include <span data-bind="invoiceNumber"></span> in your transfer reference.</p>
-                <p>Thank you for the opportunity to work on this assignment.</p>
+                <p data-bind="notesBlock"></p>
               </div>
               <div class="payment">
                 <h4>Payment routing</h4>
@@ -664,6 +799,9 @@
         }
       };
 
+      const defaultNotesTemplate =
+        "Please include {{invoiceNumber}} in your transfer reference.\nPayment is due within 14 days unless otherwise agreed.";
+
       const initialData = {
         invoiceNumber: getCurrentInvoiceCode(),
         issuedDate: todayIssuedDate,
@@ -672,19 +810,33 @@
         fromAddress: "",
         toName: "",
         toAddress: "",
-        workDescription: "Test assignment",
-        hours: "3.0",
+        workDescription: "",
+        hours: "",
         rate: "0.00",
+        workDescription2: "",
+        hours2: "",
+        rate2: "",
+        workDescription3: "",
+        hours3: "",
+        rate3: "",
         bankName: "",
         bankAddress: "",
         accountName: "",
         iban: "",
         bic: "",
-        correspondentBic: ""
+        correspondentBic: "",
+        notes: defaultNotesTemplate
       };
 
       const ids = Object.keys(initialData);
       const inputs = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
+      const rateLabels = [
+        document.getElementById("rateLabel1"),
+        document.getElementById("rateLabel2"),
+        document.getElementById("rateLabel3")
+      ];
+      const lineItemRow2 = document.getElementById("lineItemRow2");
+      const lineItemRow3 = document.getElementById("lineItemRow3");
       const PROFILE_STORAGE_KEY = "invoice-profile-v1";
       const PROFILE_FIELDS = [
         "currency",
@@ -747,20 +899,87 @@
         });
       };
 
+      const toNonNegativeNumber = (value) => Math.max(0, Number.parseFloat(value) || 0);
+
       const render = () => {
         const data = getData();
-        const hours = Math.max(0, Number.parseFloat(data.hours) || 0);
-        const rate = Math.max(0, Number.parseFloat(data.rate) || 0);
-        const total = hours * rate;
+        const currencyCode = data.currency || "USD";
         const effectiveAccountName = data.accountName || data.fromName;
+        const notesTemplate = data.notes || defaultNotesTemplate;
+        const resolvedNotes = notesTemplate.replaceAll("{{invoiceNumber}}", data.invoiceNumber || "-");
+        const lineItems = [
+          {
+            description: data.workDescription,
+            hoursRaw: data.hours,
+            rateRaw: data.rate,
+            row: null,
+            descriptionKey: "line1Description",
+            hoursKey: "line1Hours",
+            rateKey: "line1RateFormatted",
+            totalKey: "line1Total",
+            fallbackDescription: "Work item"
+          },
+          {
+            description: data.workDescription2,
+            hoursRaw: data.hours2,
+            rateRaw: data.rate2,
+            row: lineItemRow2,
+            descriptionKey: "line2Description",
+            hoursKey: "line2Hours",
+            rateKey: "line2RateFormatted",
+            totalKey: "line2Total",
+            fallbackDescription: "Additional item"
+          },
+          {
+            description: data.workDescription3,
+            hoursRaw: data.hours3,
+            rateRaw: data.rate3,
+            row: lineItemRow3,
+            descriptionKey: "line3Description",
+            hoursKey: "line3Hours",
+            rateKey: "line3RateFormatted",
+            totalKey: "line3Total",
+            fallbackDescription: "Additional item"
+          }
+        ];
+        let grandTotal = 0;
+
+        lineItems.forEach((item, index) => {
+          const hours = toNonNegativeNumber(item.hoursRaw);
+          const rate = toNonNegativeNumber(item.rateRaw);
+          const lineTotal = hours * rate;
+          const hasContent = Boolean(
+            (item.description || "").trim() ||
+              (item.hoursRaw || "").trim() ||
+              (item.rateRaw || "").trim()
+          );
+          const visible = index === 0 || hasContent;
+
+          if (item.row) {
+            item.row.style.display = visible ? "" : "none";
+          }
+
+          if (visible) {
+            setText(item.descriptionKey, item.description || item.fallbackDescription);
+            setText(item.hoursKey, hours.toFixed(2));
+            setText(item.rateKey, formatCurrency(rate, currencyCode));
+            setText(item.totalKey, formatCurrency(lineTotal, currencyCode));
+            grandTotal += lineTotal;
+          } else {
+            setText(item.descriptionKey, "");
+            setText(item.hoursKey, "");
+            setText(item.rateKey, "");
+            setText(item.totalKey, "");
+          }
+        });
 
         setText("invoiceNumber", data.invoiceNumber || "-");
         setText("issuedDate", data.issuedDate || "-");
-        setText("currency", data.currency || "USD");
-        setText("workDescription", data.workDescription || "Work item");
-        setText("hours", hours.toFixed(2));
-        setText("rateFormatted", formatCurrency(rate, data.currency));
-        setText("lineTotal", formatCurrency(total, data.currency));
+        setText("currency", currencyCode);
+        setText("grandTotal", formatCurrency(grandTotal, currencyCode));
+        rateLabels.forEach((label) => {
+          if (label) label.textContent = `Rate per hour (${currencyCode})`;
+        });
         setText("fromBlock", `${data.fromName || "-"}\n${data.fromAddress || "-"}`);
         setText("toBlock", `${data.toName || "-"}\n${data.toAddress || "-"}`);
         setText("bankName", data.bankName || "-");
@@ -769,6 +988,7 @@
         setText("iban", data.iban || "Pending");
         setText("bic", data.bic || "Pending");
         setText("correspondentBic", data.currency === "USD" ? data.correspondentBic || "If required by sender bank" : "N/A");
+        setText("notesBlock", resolvedNotes);
 
       };
 
@@ -795,7 +1015,7 @@
 
       document.getElementById("saveLocalProfile").addEventListener("click", () => {
         const profileStatus = document.getElementById("profileStatus");
-        profileStatus.textContent = "Saving profile in this browser...";
+        profileStatus.textContent = "Saving to browser...";
 
         const data = getData();
         const profilePayload = {
@@ -812,7 +1032,7 @@
 
         try {
           localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profilePayload));
-          profileStatus.textContent = "Saved in this browser.";
+          profileStatus.textContent = "Saved to browser.";
         } catch (error) {
           profileStatus.textContent = `Save failed: ${error instanceof Error ? error.message : "Unknown error"}`;
         }
@@ -820,12 +1040,12 @@
 
       document.getElementById("loadLocalProfile").addEventListener("click", () => {
         const profileStatus = document.getElementById("profileStatus");
-        profileStatus.textContent = "Loading profile from this browser...";
+        profileStatus.textContent = "Loading saved values from browser...";
 
         try {
           const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
           if (!raw) {
-            profileStatus.textContent = "No saved profile in this browser yet.";
+            profileStatus.textContent = "No saved values in this browser yet.";
             return;
           }
 
@@ -834,7 +1054,7 @@
           render();
 
           const loadedCurrency = typeof data.currency === "string" && data.currency ? data.currency : "USD";
-          profileStatus.textContent = `Loaded ${loadedCurrency} details from browser storage.`;
+          profileStatus.textContent = `Loaded ${loadedCurrency} values from browser storage.`;
         } catch (error) {
           profileStatus.textContent = `Load failed: ${error instanceof Error ? error.message : "Unknown error"}`;
         }
