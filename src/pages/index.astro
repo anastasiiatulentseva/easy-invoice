@@ -1,0 +1,827 @@
+---
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice Builder</title>
+    <style>
+      :root {
+        --app-bg: #eef3f8;
+        --panel: #ffffff;
+        --ink: #0f172a;
+        --muted: #64748b;
+        --line: #d6e0eb;
+        --line-strong: #b2c1d3;
+        --accent: #0a355f;
+        --accent-soft: #e6eff8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--app-bg);
+        color: var(--ink);
+        font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      }
+
+      .layout {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 1.2rem;
+        padding: 1.2rem;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+      }
+
+      .controls {
+        padding: 1rem;
+        position: sticky;
+        top: 1rem;
+        height: calc(100vh - 2rem);
+        overflow: auto;
+      }
+
+      .controls h1 {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 700;
+      }
+
+      .controls p {
+        margin: 0.35rem 0 1rem;
+        color: var(--muted);
+      }
+
+      fieldset {
+        margin: 0 0 0.9rem;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 0.7rem;
+      }
+
+      legend {
+        font-size: 0.8rem;
+        color: var(--muted);
+        padding: 0 0.35rem;
+      }
+
+      label {
+        display: block;
+        font-size: 0.82rem;
+        color: #334155;
+        margin: 0.5rem 0 0.2rem;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 0.5rem;
+        font: inherit;
+        font-size: 0.9rem;
+        background: #fff;
+      }
+
+      textarea {
+        min-height: 70px;
+        resize: vertical;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 0.6rem;
+        margin-top: 1rem;
+      }
+
+      .inline-action {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .inline-action .btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      .btn {
+        flex: 1;
+        border: 0;
+        border-radius: 10px;
+        padding: 0.65rem 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .btn-secondary {
+        background: var(--accent-soft);
+        color: #0f172a;
+      }
+
+      .workspace {
+        min-width: 0;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+      }
+
+      .paper-wrap {
+        width: min(100%, 900px);
+      }
+
+      .paper {
+        width: 100%;
+        aspect-ratio: 210 / 297;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+        padding: 11.5mm 11mm 10mm;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 6mm;
+        overflow: hidden;
+      }
+
+      .inv-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 7mm;
+        align-items: start;
+        padding-bottom: 4mm;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .invoice-kicker {
+        margin: 0 0 1.4mm;
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #5c728a;
+      }
+
+      .title {
+        margin: 0;
+        font-size: 1.85rem;
+        letter-spacing: 0.08em;
+      }
+
+      .subtitle {
+        margin: 1.6mm 0 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .meta-card {
+        min-width: 60mm;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 3.2mm;
+        background: linear-gradient(180deg, #f7fbff 0%, #f8fafc 100%);
+      }
+
+      .meta-row {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: space-between;
+        gap: 3mm;
+        font-size: 0.73rem;
+        color: #32495f;
+        line-height: 1.45;
+      }
+
+      .meta-row strong {
+        color: #10243b;
+        font-weight: 600;
+      }
+
+      .amount-due {
+        margin-top: 3mm;
+        padding-top: 2.3mm;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .amount-due span {
+        display: block;
+        font-size: 0.69rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #5c728a;
+      }
+
+      .amount-due strong {
+        display: block;
+        margin-top: 1mm;
+        font-size: 1.05rem;
+        color: #0c2745;
+      }
+
+      .party-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5mm;
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 4mm;
+        background: #f8fbff;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #4f6479;
+      }
+
+      .card pre {
+        margin: 2mm 0 0;
+        font-family: inherit;
+        white-space: pre-wrap;
+        font-size: 0.8rem;
+        line-height: 1.45;
+      }
+
+      .items-card {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .section-label {
+        margin: 0;
+        padding: 3mm 3.2mm;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #4f6479;
+        background: #f8fbff;
+        border-bottom: 1px solid var(--line);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .line-items-table {
+        table-layout: fixed;
+      }
+
+      .line-items-table th,
+      .line-items-table td {
+        vertical-align: middle;
+      }
+
+      .line-items-table .col-desc {
+        width: 52%;
+        text-align: left;
+      }
+
+      .line-items-table .col-hours {
+        width: 14%;
+        text-align: center;
+      }
+
+      .line-items-table .col-rate,
+      .line-items-table .col-total {
+        width: 17%;
+        text-align: right;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+
+      thead th {
+        font-size: 0.71rem;
+        text-transform: uppercase;
+        color: #334a60;
+        padding: 2.4mm 2.2mm;
+        border-bottom: 1px solid var(--line);
+      }
+
+      tbody td {
+        padding: 2.8mm 2.2mm;
+        border-bottom: 1px solid #ebf1f7;
+        font-size: 0.82rem;
+      }
+
+      .total-label {
+        text-align: right;
+      }
+
+      tfoot td {
+        padding: 3.1mm 2.2mm;
+        font-size: 0.88rem;
+        font-weight: 700;
+        border-top: 1.6px solid #7b8ea5;
+      }
+
+      .footer {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 5mm;
+      }
+
+      .notes,
+      .payment {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 3.3mm;
+      }
+
+      .notes h4,
+      .payment h4 {
+        margin: 0 0 2mm;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #4f6479;
+      }
+
+      .notes p,
+      .payment p {
+        margin: 1.2mm 0;
+        font-size: 0.78rem;
+        line-height: 1.4;
+      }
+
+      .payment [data-bind="bankAddress"] {
+        white-space: pre-line;
+      }
+
+      @media (max-width: 1080px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .controls {
+          position: static;
+          height: auto;
+        }
+      }
+
+      @media screen and (max-width: 760px) {
+        .paper {
+          aspect-ratio: auto;
+          min-height: 297mm;
+        }
+
+        .inv-header,
+        .party-grid,
+        .footer {
+          grid-template-columns: 1fr;
+        }
+
+        .meta-card {
+          width: 100%;
+          min-width: 0;
+        }
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 0;
+        }
+
+        html,
+        body {
+          background: #fff;
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        .layout {
+          display: block;
+          padding: 0;
+        }
+
+        .controls {
+          display: none;
+        }
+
+        .workspace {
+          padding: 0;
+        }
+
+        .paper-wrap {
+          width: 210mm;
+          max-width: 210mm;
+          margin: 0;
+        }
+
+        .paper {
+          width: 210mm;
+          height: 297mm;
+          min-height: 297mm;
+          aspect-ratio: auto;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+          page-break-inside: avoid;
+          break-inside: avoid;
+          padding: 11.5mm 11mm 10mm;
+        }
+
+        .inv-header {
+          grid-template-columns: 1fr auto;
+        }
+
+        .party-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .footer {
+          grid-template-columns: 1.15fr 1fr;
+        }
+
+        .meta-card {
+          min-width: 60mm;
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="layout">
+      <aside class="panel controls">
+        <h1>Invoice Data</h1>
+        <p>Edit values on the left. The invoice preview updates live.</p>
+        <p style="margin:0 0 0.8rem;padding:0.55rem 0.7rem;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;font-size:0.82rem;color:#334155;">
+          Start here: fill in your details, use browser autofill, or load saved values from this browser.
+        </p>
+
+        <fieldset>
+          <legend>Header</legend>
+          <label for="invoiceNumber">Invoice number</label>
+          <input id="invoiceNumber" />
+          <label for="issuedDate">Date issued</label>
+          <input id="issuedDate" />
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="USD" selected>USD</option>
+            <option value="EUR">EUR</option>
+          </select>
+        </fieldset>
+
+        <fieldset>
+          <legend>Parties</legend>
+          <label for="fromName">From name</label>
+          <input id="fromName" placeholder="Your name" autocomplete="name" />
+          <label for="fromAddress">From address</label>
+          <textarea id="fromAddress" placeholder="Your address" autocomplete="street-address"></textarea>
+
+          <label for="toName">Client name</label>
+          <input id="toName" placeholder="Client name" autocomplete="organization" />
+          <label for="toAddress">Client address</label>
+          <textarea id="toAddress" placeholder="Client address" autocomplete="street-address"></textarea>
+        </fieldset>
+
+        <fieldset>
+          <legend>Billing</legend>
+          <label for="workDescription">Description</label>
+          <input id="workDescription" value="Test assignment" />
+          <label for="hours">Hours</label>
+          <input id="hours" type="number" step="0.1" min="0" value="3.0" />
+          <label for="rate">Rate per hour</label>
+          <input id="rate" type="number" step="0.01" min="0" value="0.00" />
+        </fieldset>
+
+        <fieldset>
+          <legend>Payment details</legend>
+          <label for="bankName">Bank</label>
+          <input id="bankName" placeholder="Bank name" />
+          <label for="bankAddress">Bank address</label>
+          <textarea id="bankAddress" placeholder="Bank address"></textarea>
+          <label for="accountName">Account holder</label>
+          <input id="accountName" placeholder="Account holder name" autocomplete="name" />
+          <label for="iban">IBAN</label>
+          <input id="iban" placeholder="Enter IBAN" />
+          <label for="bic">BIC / SWIFT</label>
+          <input id="bic" placeholder="Enter BIC / SWIFT" />
+          <label for="correspondentBic">Correspondent BIC (USD)</label>
+          <input id="correspondentBic" placeholder="Enter correspondent BIC for USD transfers" />
+        </fieldset>
+
+        <fieldset>
+          <legend>Browser profile</legend>
+          <p style="margin:0 0 0.55rem;font-size:0.8rem;color:#475569;">Saved values stay in this browser only.</p>
+          <div class="inline-action">
+            <button id="loadLocalProfile" class="btn btn-secondary" type="button">Fill In</button>
+            <button id="saveLocalProfile" class="btn btn-primary" type="button">Save Here</button>
+          </div>
+          <p id="profileStatus" style="margin:0.6rem 0 0;font-size:0.8rem;color:#475569;"></p>
+        </fieldset>
+
+        <div class="toolbar">
+          <button id="downloadPdf" class="btn btn-primary" type="button">Download PDF</button>
+          <button id="resetDemo" class="btn btn-secondary" type="button">Reset</button>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <div class="paper-wrap">
+          <article id="invoicePaper" class="paper">
+            <header class="inv-header">
+              <div>
+                <p class="invoice-kicker">Professional Services</p>
+                <h2 class="title">Invoice</h2>
+                <p class="subtitle">Please remit payment by bank transfer using invoice reference.</p>
+              </div>
+              <div class="meta-card">
+                <div class="meta-row"><span>Invoice no.</span> <strong data-bind="invoiceNumber"></strong></div>
+                <div class="meta-row"><span>Date issued</span> <strong data-bind="issuedDate"></strong></div>
+                <div class="meta-row"><span>Currency</span> <strong data-bind="currency"></strong></div>
+                <div class="amount-due">
+                  <span>Total due</span>
+                  <strong data-bind="lineTotal"></strong>
+                </div>
+              </div>
+            </header>
+
+            <section class="party-grid">
+              <div class="card">
+                <h3>From</h3>
+                <pre data-bind="fromBlock"></pre>
+              </div>
+              <div class="card">
+                <h3>Bill To</h3>
+                <pre data-bind="toBlock"></pre>
+              </div>
+            </section>
+
+            <section class="items-card">
+              <p class="section-label">Line items</p>
+              <table class="line-items-table">
+                <thead>
+                  <tr>
+                    <th class="col-desc">Description</th>
+                    <th class="col-hours">Hours</th>
+                    <th class="col-rate">Rate</th>
+                    <th class="col-total">Line total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="col-desc" data-bind="workDescription"></td>
+                    <td class="col-hours" data-bind="hours"></td>
+                    <td class="col-rate" data-bind="rateFormatted"></td>
+                    <td class="col-total" data-bind="lineTotal"></td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3" class="total-label">Total amount due</td>
+                    <td class="col-total" data-bind="lineTotal"></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </section>
+
+            <footer class="footer">
+              <div class="notes">
+                <h4>Notes</h4>
+                <p>Please include <span data-bind="invoiceNumber"></span> in your transfer reference.</p>
+                <p>Thank you for the opportunity to work on this assignment.</p>
+              </div>
+              <div class="payment">
+                <h4>Payment routing</h4>
+                <p><strong>Bank:</strong> <span data-bind="bankName"></span></p>
+                <p><strong>Bank address:</strong> <span data-bind="bankAddress"></span></p>
+                <p><strong>Account:</strong> <span data-bind="accountName"></span></p>
+                <p><strong>IBAN:</strong> <span data-bind="iban"></span></p>
+                <p><strong>BIC:</strong> <span data-bind="bic"></span></p>
+                <p><strong>Correspondent BIC:</strong> <span data-bind="correspondentBic"></span></p>
+              </div>
+            </footer>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const todayIssuedDate = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      }).format(new Date());
+
+      const getNextInvoiceCode = () => {
+        const year = new Date().getFullYear();
+        const key = `invoice-sequence-${year}`;
+
+        try {
+          const last = Number.parseInt(localStorage.getItem(key) || "0", 10);
+          const next = Number.isFinite(last) && last > 0 ? last + 1 : 1;
+          localStorage.setItem(key, String(next));
+          return `INV-${year}-${String(next).padStart(3, "0")}`;
+        } catch {
+          return `INV-${year}-001`;
+        }
+      };
+
+      const initialData = {
+        invoiceNumber: getNextInvoiceCode(),
+        issuedDate: todayIssuedDate,
+        currency: "USD",
+        fromName: "",
+        fromAddress: "",
+        toName: "",
+        toAddress: "",
+        workDescription: "Test assignment",
+        hours: "3.0",
+        rate: "0.00",
+        bankName: "",
+        bankAddress: "",
+        accountName: "",
+        iban: "",
+        bic: "",
+        correspondentBic: ""
+      };
+
+      const ids = Object.keys(initialData);
+      const inputs = Object.fromEntries(ids.map((id) => [id, document.getElementById(id)]));
+      const PROFILE_STORAGE_KEY = "invoice-profile-v1";
+      const PROFILE_FIELDS = [
+        "currency",
+        "fromName",
+        "fromAddress",
+        "bankName",
+        "bankAddress",
+        "accountName",
+        "iban",
+        "bic",
+        "correspondentBic"
+      ];
+
+      const formatCurrency = (amount, currencyCode) =>
+        new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: currencyCode || "USD"
+        }).format(amount);
+
+      const sanitizeFilenamePart = (value) =>
+        (value || "")
+          .toString()
+          .trim()
+          .replace(/[^a-z0-9]+/gi, "-")
+          .replace(/^-+|-+$/g, "");
+
+      const buildPrintTitle = (data) => {
+        const invoicePart = sanitizeFilenamePart(data.invoiceNumber) || "invoice";
+        const clientPart = sanitizeFilenamePart(data.toName);
+        return ["invoice", invoicePart, clientPart].filter(Boolean).join("_");
+      };
+
+      const assignIfPresent = (key, value) => {
+        if (inputs[key] && typeof value === "string") {
+          inputs[key].value = value;
+        }
+      };
+
+      const applyProfileValues = (profileData) => {
+        for (const key of PROFILE_FIELDS) {
+          assignIfPresent(key, profileData?.[key] ?? "");
+        }
+      };
+
+      const getData = () => {
+        const values = {};
+        for (const id of ids) values[id] = inputs[id].value.trim();
+        return values;
+      };
+
+      const applyInitialData = () => {
+        for (const [key, value] of Object.entries(initialData)) {
+          if (inputs[key]) inputs[key].value = value;
+        }
+      };
+
+      const setText = (key, value) => {
+        document.querySelectorAll(`[data-bind="${key}"]`).forEach((node) => {
+          node.textContent = value;
+        });
+      };
+
+      const render = () => {
+        const data = getData();
+        const hours = Math.max(0, Number.parseFloat(data.hours) || 0);
+        const rate = Math.max(0, Number.parseFloat(data.rate) || 0);
+        const total = hours * rate;
+        const effectiveAccountName = data.accountName || data.fromName;
+
+        setText("invoiceNumber", data.invoiceNumber || "-");
+        setText("issuedDate", data.issuedDate || "-");
+        setText("currency", data.currency || "USD");
+        setText("workDescription", data.workDescription || "Work item");
+        setText("hours", hours.toFixed(2));
+        setText("rateFormatted", formatCurrency(rate, data.currency));
+        setText("lineTotal", formatCurrency(total, data.currency));
+        setText("fromBlock", `${data.fromName || "-"}\n${data.fromAddress || "-"}`);
+        setText("toBlock", `${data.toName || "-"}\n${data.toAddress || "-"}`);
+        setText("bankName", data.bankName || "-");
+        setText("bankAddress", data.bankAddress || "-");
+        setText("accountName", effectiveAccountName || "-");
+        setText("iban", data.iban || "Pending");
+        setText("bic", data.bic || "Pending");
+        setText("correspondentBic", data.currency === "USD" ? data.correspondentBic || "If required by sender bank" : "N/A");
+
+      };
+
+      ids.forEach((id) => inputs[id].addEventListener("input", render));
+
+      document.getElementById("downloadPdf").addEventListener("click", () => {
+        const previousTitle = document.title;
+        document.title = buildPrintTitle(getData());
+
+        const restoreTitle = () => {
+          document.title = previousTitle;
+        };
+
+        window.addEventListener("afterprint", restoreTitle, { once: true });
+        window.print();
+        setTimeout(restoreTitle, 0);
+      });
+
+      document.getElementById("resetDemo").addEventListener("click", () => {
+        applyInitialData();
+        render();
+      });
+
+      document.getElementById("saveLocalProfile").addEventListener("click", () => {
+        const profileStatus = document.getElementById("profileStatus");
+        profileStatus.textContent = "Saving profile in this browser...";
+
+        const data = getData();
+        const profilePayload = {
+          currency: data.currency || "USD",
+          fromName: data.fromName,
+          fromAddress: data.fromAddress,
+          bankName: data.bankName,
+          bankAddress: data.bankAddress,
+          accountName: data.accountName || data.fromName,
+          iban: data.iban,
+          bic: data.bic,
+          correspondentBic: data.correspondentBic
+        };
+
+        try {
+          localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profilePayload));
+          profileStatus.textContent = "Saved in this browser.";
+        } catch (error) {
+          profileStatus.textContent = `Save failed: ${error instanceof Error ? error.message : "Unknown error"}`;
+        }
+      });
+
+      document.getElementById("loadLocalProfile").addEventListener("click", () => {
+        const profileStatus = document.getElementById("profileStatus");
+        profileStatus.textContent = "Loading profile from this browser...";
+
+        try {
+          const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
+          if (!raw) {
+            profileStatus.textContent = "No saved profile in this browser yet.";
+            return;
+          }
+
+          const data = JSON.parse(raw);
+          applyProfileValues(data);
+          render();
+
+          const loadedCurrency = typeof data.currency === "string" && data.currency ? data.currency : "USD";
+          profileStatus.textContent = `Loaded ${loadedCurrency} details from browser storage.`;
+        } catch (error) {
+          profileStatus.textContent = `Load failed: ${error instanceof Error ? error.message : "Unknown error"}`;
+        }
+      });
+
+      applyInitialData();
+      render();
+    </script>
+  </body>
+</html>
