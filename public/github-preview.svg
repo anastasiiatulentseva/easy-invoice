@@ -1,0 +1,79 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Easy Invoice GitHub Preview</title>
+  <desc id="desc">Wide preview card showing an invoice builder for EU freelancers who accept EUR and USD payments.</desc>
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="1200" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EDF3FA"/>
+      <stop offset="1" stop-color="#DCE9F7"/>
+    </linearGradient>
+    <linearGradient id="panelGlow" x1="690" y1="84" x2="1162" y2="596" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#F6FAFF" stop-opacity="0.98"/>
+    </linearGradient>
+    <filter id="shadow" x="42" y="22" width="1196" height="676" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="18"/>
+      <feGaussianBlur stdDeviation="18"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.07 0 0 0 0 0.17 0 0 0 0 0.31 0 0 0 0.12 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <circle cx="1126" cy="88" r="176" fill="#FFFFFF" fill-opacity="0.48"/>
+  <circle cx="1178" cy="562" r="144" fill="#FFFFFF" fill-opacity="0.34"/>
+  <circle cx="122" cy="590" r="184" fill="#FFFFFF" fill-opacity="0.28"/>
+
+  <g filter="url(#shadow)">
+    <rect x="78" y="58" width="1124" height="568" rx="30" fill="#FDFEFE"/>
+  </g>
+
+  <text x="146" y="166" fill="#133F72" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="4.6">EU FREELANCE INVOICING</text>
+  <text x="146" y="236" fill="#123E70" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="700">Easy Invoice</text>
+  <text x="146" y="288" fill="#4B6A8E" font-family="Arial, Helvetica, sans-serif" font-size="22">Browser-based invoice builder</text>
+  <text x="146" y="320" fill="#4B6A8E" font-family="Arial, Helvetica, sans-serif" font-size="22">for EUR and USD payments.</text>
+
+  <rect x="146" y="360" width="210" height="44" rx="22" fill="#E7F0FA"/>
+  <text x="181" y="388" fill="#184877" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700">Local-first</text>
+  <rect x="372" y="360" width="150" height="44" rx="22" fill="#EAF5EC"/>
+  <text x="412" y="388" fill="#255F35" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">EUR</text>
+  <rect x="538" y="360" width="150" height="44" rx="22" fill="#FFF2E8"/>
+  <text x="578" y="388" fill="#915128" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">USD</text>
+
+  <text x="146" y="462" fill="#173A61" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="700" letter-spacing="1.4">WHY IT WORKS</text>
+  <text x="146" y="502" fill="#233956" font-family="Arial, Helvetica, sans-serif" font-size="22">Live preview, local-only data,</text>
+  <text x="146" y="534" fill="#233956" font-family="Arial, Helvetica, sans-serif" font-size="22">and print-ready PDF export.</text>
+  <text x="146" y="574" fill="#4D6988" font-family="Arial, Helvetica, sans-serif" font-size="20">Clean static setup for GitHub Pages and easy forking.</text>
+
+  <g>
+    <rect x="690" y="102" width="446" height="436" rx="24" fill="url(#panelGlow)" stroke="#B5C9DE" stroke-width="2"/>
+    <text x="726" y="158" fill="#173E6D" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="3">PRO SERVICES</text>
+    <text x="726" y="213" fill="#123E70" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700">Invoice</text>
+    <text x="726" y="247" fill="#58769A" font-family="Arial, Helvetica, sans-serif" font-size="18">Bank transfer invoice template</text>
+
+    <rect x="960" y="134" width="140" height="120" rx="16" fill="#F7FBFF" stroke="#B7CADF" stroke-width="2"/>
+    <text x="980" y="168" fill="#4D6A8B" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.1">INVOICE NO.</text>
+    <text x="980" y="191" fill="#173C68" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700">INV-2026-001</text>
+    <text x="980" y="220" fill="#4D6A8B" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" letter-spacing="1.1">TOTAL DUE</text>
+    <text x="980" y="245" fill="#123E70" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">$555.00</text>
+
+    <line x1="726" y1="282" x2="1100" y2="282" stroke="#BDD0E1" stroke-width="2"/>
+
+    <rect x="726" y="308" width="166" height="118" rx="16" fill="#FFFFFF" stroke="#C6D7E8" stroke-width="2"/>
+    <rect x="914" y="308" width="186" height="118" rx="16" fill="#FFFFFF" stroke="#C6D7E8" stroke-width="2"/>
+
+    <text x="748" y="344" fill="#49688B" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.4">FROM</text>
+    <text x="748" y="374" fill="#1D2B44" font-family="Arial, Helvetica, sans-serif" font-size="15">Anastasiia Tulentseva</text>
+    <text x="748" y="401" fill="#1D2B44" font-family="Arial, Helvetica, sans-serif" font-size="15">Berlin, Germany</text>
+
+    <text x="936" y="344" fill="#49688B" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.4">BILL TO</text>
+    <text x="936" y="374" fill="#1D2B44" font-family="Arial, Helvetica, sans-serif" font-size="14">Northfield Analytics Ltd.</text>
+    <text x="936" y="401" fill="#1D2B44" font-family="Arial, Helvetica, sans-serif" font-size="14">Wilmington, United States</text>
+
+    <rect x="726" y="448" width="374" height="68" rx="14" fill="#F9FBFE" stroke="#CAD9E8" stroke-width="2"/>
+    <text x="748" y="476" fill="#4B6889" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="1.3">LINE ITEMS</text>
+    <text x="748" y="502" fill="#213752" font-family="Arial, Helvetica, sans-serif" font-size="15">Website development, deployment, docs</text>
+  </g>
+</svg>

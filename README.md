@@ -58,6 +58,23 @@ npm run preview  # preview the production build locally
 npm run check    # run Astro project checks
 ```
 
+## GitHub Pages
+
+This repository is configured for deployment to GitHub Pages as a project site at:
+
+- `https://anastasiiatulentseva.github.io/easy-invoice/`
+
+The deployment workflow lives at `.github/workflows/deploy.yml` and runs automatically on pushes to `main`.
+
+To enable it on GitHub:
+
+1. Push the repository to GitHub.
+2. Open `Settings` -> `Pages`.
+3. Set `Source` to `GitHub Actions`.
+4. Push to `main` or run the workflow manually from the `Actions` tab.
+
+The Astro config is set up with the GitHub Pages project-site base path for this repo, so if you later move it to a different repository name or custom domain, update `site` and `base` in `astro.config.mjs`.
+
 ## How To Use It
 
 1. Fill in the invoice fields in the left panel.
